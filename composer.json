@@ -1,6 +1,7 @@
 {
     "name": "vdvt/support",
     "description": "vdvt support",
+    "license": "BSD-3-Clause",
     "authors": [
         {
             "name": "Trinh Le",
