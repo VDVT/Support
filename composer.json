@@ -1,0 +1,32 @@
+{
+    "name": "vdvt/support",
+    "description": ":package_description",
+    "authors": [
+        {
+            "name": "Trinh Le",
+            "email": "lehuutrinh32@gmail.com"
+        }
+    ],
+    "homepage": "https://github.com/vdvt/support",
+    "keywords": ["Laravel", "Support"],
+    "require": {
+        "illuminate/support": "~7|~8"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~9.0",
+        "orchestra/testbench": "~5|~6"
+    },
+    "autoload": {
+        "psr-4": {
+            "VDVT\\Support\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "VDVT\\Support\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+
+    }
+}
