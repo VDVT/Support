@@ -1,6 +1,7 @@
 {
     "name": "vdvt/support",
     "description": "vdvt support",
+    "license": "VDVT",
     "authors": [
         {
             "name": "Trinh Le",
