@@ -9,7 +9,10 @@
         }
     ],
     "homepage": "https://github.com/vdvt/support",
-    "keywords": ["Laravel", "Support"],
+    "keywords": [
+        "Laravel",
+        "Support"
+    ],
     "require": {
         "illuminate/support": "~5"
     },
@@ -28,6 +31,13 @@
         }
     },
     "extra": {
-
+        "laravel": {
+            "providers": [
+                "VDVT\\Support\\SupportServiceProvider"
+            ],
+            "aliases": {
+                "MailVariable": "VDVT\\Support\\Facades\\MailVariable"
+            }
+        }
     }
 }
