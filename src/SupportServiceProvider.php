@@ -16,6 +16,8 @@ class SupportServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Publishing is only necessary when using the CLI.
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'vdvt/support');
+
         if ($this->app->runningInConsole()) {
             $this->bootForConsole();
         }
@@ -60,6 +62,11 @@ class SupportServiceProvider extends ServiceProvider
         // Publishing the configuration file.
         $this->publishes([
             __DIR__ . '/../config/support.php' => config_path('support.php'),
+        ], 'vdvt/support');
+
+        $this->publishes([
+            __DIR__ . '/../resources/views' => base_path('resources/views/vendor/vdvt'),
         ], 'vdvt::support');
+
     }
 }

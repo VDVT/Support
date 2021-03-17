@@ -9,7 +9,7 @@ This is where your description should go. Take a look at [contributing.md](contr
 
 Via Composer
 
-``` bash
+```bash
 $ composer require vdvt/support
 ```
 
@@ -21,7 +21,7 @@ Please see the [changelog](changelog.md) for more information on what has change
 
 ## Testing
 
-``` bash
+```bash
 $ composer test
 ```
 
@@ -35,18 +35,22 @@ If you discover any security related issues, please email author email instead o
 
 ## Credits
 
-- [author name][link-author]
-- [All Contributors][link-contributors]
+-   [author name][link-author]
+-   [All Contributors][link-contributors]
 
 ## License
 
 license. Please see the [license file](license.md) for more information.
 
+## Call Data
+
+-   View: vdvt/support::index
+-   Config: vdvt::support
+
 [ico-version]: https://img.shields.io/packagist/v/vdvt/support.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/vdvt/support.svg?style=flat-square
 [ico-travis]: https://img.shields.io/travis/vdvt/support/master.svg?style=flat-square
 [ico-styleci]: https://styleci.io/repos/12345678/shield
-
 [link-packagist]: https://packagist.org/packages/vdvt/support
 [link-downloads]: https://packagist.org/packages/vdvt/support
 [link-travis]: https://travis-ci.org/vdvt/support
