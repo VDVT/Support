@@ -17,6 +17,7 @@ class SupportServiceProvider extends ServiceProvider
     {
         // Publishing is only necessary when using the CLI.
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'vdvt/support');
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'vdvt/support');
 
         if ($this->app->runningInConsole()) {
             $this->bootForConsole();
@@ -34,7 +35,7 @@ class SupportServiceProvider extends ServiceProvider
             File::requireOnce($helper);
         }
 
-        $this->mergeConfigFrom(__DIR__ . '/../config/support.php', 'vdvt::support');
+        $this->mergeConfigFrom(__DIR__ . '/../config/support.php', 'vdvt.support.support');
 
         // Register the service the package provides.
         $this->app->singleton('MailVariable', function ($app) {
@@ -61,12 +62,17 @@ class SupportServiceProvider extends ServiceProvider
     {
         // Publishing the configuration file.
         $this->publishes([
-            __DIR__ . '/../config/support.php' => config_path('support.php'),
-        ], 'vdvt/support');
+            __DIR__ . '/../config/support.php' => config_path('vdvt/support/support.php'),
+        ], 'vdvt');
 
+        // Publishing the view files.
         $this->publishes([
-            __DIR__ . '/../resources/views' => base_path('resources/views/vendor/vdvt'),
-        ], 'vdvt::support');
+            __DIR__ . '/../resources/views' => base_path('resources/views/vendor/vdvt/support'),
+        ], 'vdvt');
 
+        // Publishing the translation files.
+        $this->publishes([
+            __DIR__ . '/../resources/lang' => resource_path('lang/vendor/vdvt/support'),
+        ], 'vdvt');
     }
 }

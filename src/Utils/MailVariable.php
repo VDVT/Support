@@ -85,7 +85,8 @@ class MailVariable
     protected function loadTemplates(array $templates): array
     {
         return array_map(function ($template) {
-            $templatePath = config('support.email_templates', __DIR__ . '/../../resources/email-templates/') . "{$template}.tpl";
+            $templatePath = (config('vdvt.support.support.email_templates') ?: __DIR__ . '/../../resources/email-templates/') . "{$template}.tpl";
+
             return File::exists($templatePath) ? get_file_data($templatePath, false) : '';
         }, $templates);
     }
