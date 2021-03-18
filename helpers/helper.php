@@ -17,6 +17,7 @@ if (!function_exists('get_file_data')) {
                 return $file;
             }
         }
-        return [];
+
+        return $convert_to_array ? [] : null;
     }
 }

@@ -35,6 +35,11 @@ class MailVariable
      */
     protected $module = 'core';
 
+    public function __construct()
+    {
+        $this->init();
+    }
+
     /**
      * MailVariable constructor.
      */
@@ -92,6 +97,19 @@ class MailVariable
     }
 
     /**
+     * Init
+     *
+     * @return void
+     */
+    public function init()
+    {
+        $this->initVariable();
+        $this->initVariableValues();
+
+        return $this;
+    }
+
+    /**
      * @param $module
      * @return MailVariable
      */
@@ -121,7 +139,7 @@ class MailVariable
     public function addVariables(array $variables): self
     {
         foreach ($variables as $name => $description) {
-            $this->variables[$this->module][$name] = $description;
+            $this->addVariable($name, $description);
         }
 
         return $this;
@@ -151,7 +169,7 @@ class MailVariable
      */
     public function setVariableValue($variable, $value): self
     {
-        $this->variables[$this->module][$variable] = $value;
+        $this->variableValues[$this->module][$variable] = $value;
         return $this;
     }
 
@@ -162,8 +180,8 @@ class MailVariable
      */
     public function setVariableValues(array $data): self
     {
-        foreach ($data as $name => $value) {
-            $this->variableValues[$this->module][$name] = $value;
+        foreach ($data as $variable => $value) {
+            $this->setVariableValue($variable, $value);
         }
 
         return $this;
@@ -198,25 +216,26 @@ class MailVariable
      * @return string
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function prepareData($content, $variables = []): string
+    public function prepareData( ? string $content, array $variables = []) : string
     {
-        $this->initVariable();
-
-        $this->initVariableValues();
-
         if (!empty($content)) {
-            $content = $this->replaceVariableValue(array_keys($this->variables['core']), 'core', $content);
+            $coreVariables = array_keys($this->variables['core']);
 
             if ($this->module !== 'core') {
                 if (empty($variables)) {
                     $variables = Arr::get($this->variables, $this->module, []);
                 }
-                $content = $this->replaceVariableValue(
-                    array_keys($variables),
-                    $this->module,
-                    $content
-                );
             }
+
+            $coreVariables = array_filter($coreVariables, function ($variable) use ($variables) {
+                return !in_array($variable, $variables);
+            });
+
+            $content = $this->replaceVariableValue(
+                array_keys($variables),
+                $this->module,
+                $this->replaceVariableValue($coreVariables, 'core', $content)
+            );
         }
 
         return $content;
