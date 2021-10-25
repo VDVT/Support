@@ -1,5 +1,7 @@
 <?php
 
+namespace VDVT\Support\Providers;
+
 class RepositoryProvider extends \Illuminate\Support\ServiceProvider
 {
     /**

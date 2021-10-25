@@ -1,5 +1,7 @@
 <?php
 
+namespace VDVT\Support\Providers;
+
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     const DEFAULT_METHOD = 'singleton';
