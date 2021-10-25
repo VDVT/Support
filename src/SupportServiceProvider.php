@@ -2,7 +2,7 @@
 
 namespace VDVT\Support;
 
-use File;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 use VDVT\Support\Utils\MailVariable;
 
@@ -22,6 +22,29 @@ class SupportServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->bootForConsole();
         }
+    }
+
+    /**
+     * Console-specific booting.
+     *
+     * @return void
+     */
+    protected function bootForConsole(): void
+    {
+        // Publishing the configuration file.
+        $this->publishes([
+            __DIR__ . '/../config/support.php' => config_path('vdvt/support/support.php'),
+        ], 'vdvt');
+
+        // Publishing the view files.
+        $this->publishes([
+            __DIR__ . '/../resources/views' => base_path('resources/views/vendor/vdvt/support'),
+        ], 'vdvt');
+
+        // Publishing the translation files.
+        $this->publishes([
+            __DIR__ . '/../resources/lang' => resource_path('lang/vendor/vdvt/support'),
+        ], 'vdvt');
     }
 
     /**
@@ -51,28 +74,5 @@ class SupportServiceProvider extends ServiceProvider
     public function provides()
     {
         return ['MailVariable'];
-    }
-
-    /**
-     * Console-specific booting.
-     *
-     * @return void
-     */
-    protected function bootForConsole(): void
-    {
-        // Publishing the configuration file.
-        $this->publishes([
-            __DIR__ . '/../config/support.php' => config_path('vdvt/support/support.php'),
-        ], 'vdvt');
-
-        // Publishing the view files.
-        $this->publishes([
-            __DIR__ . '/../resources/views' => base_path('resources/views/vendor/vdvt/support'),
-        ], 'vdvt');
-
-        // Publishing the translation files.
-        $this->publishes([
-            __DIR__ . '/../resources/lang' => resource_path('lang/vendor/vdvt/support'),
-        ], 'vdvt');
     }
 }
