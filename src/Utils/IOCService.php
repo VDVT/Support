@@ -30,7 +30,7 @@ class IOCService
      * @param array $repositories
      * @return $this
      */
-    public function repositories(array $repositories): self
+    public function repositories(array $repositories)
     {
         foreach ($repositories as $repositoryInterface => $config) {
             # code...
@@ -50,7 +50,7 @@ class IOCService
      * @param string $defaultMethod
      * @return $this
      */
-    public function services(array $services, string $defaultMethod = IOCService::DEFAULT_METHOD): self
+    public function services(array $services, string $defaultMethod = IOCService::DEFAULT_METHOD)
     {
         foreach ($services as $serviceInterface => $serviceInstance) {
             $method = $defaultMethod;
@@ -67,7 +67,7 @@ class IOCService
      * @param array $events
      * @return $this
      */
-    protected function events(array $events): self
+    protected function events(array $events)
     {
         foreach ($events as $event => $handlers) {
             foreach (is_array($handlers) ? $handlers : [$handlers] as $handler) {
@@ -81,7 +81,7 @@ class IOCService
      * @param array $commands
      * @return $this
      */
-    protected function commands(array $commands): self
+    protected function commands(array $commands)
     {
         Artisan::getFacadeRoot()
             ->starting(function ($artisan) use ($commands) {
