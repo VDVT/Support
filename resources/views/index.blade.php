@@ -1,1 +1,1 @@
-{!! MailVariable::prepareData("{{ header}} {$htmlContent} {{ footer }}") !!}
+{!! \VDVT\Support\Facades\MailVariable::prepareData("{{ header}} {$htmlContent} {{ footer }}") !!}
