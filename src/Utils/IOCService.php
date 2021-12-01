@@ -2,9 +2,9 @@
 
 namespace VDVT\Support\Utils;
 
+use Illuminate\Console\Application as Artisan;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Artisan;
 
 class IOCService
 {
@@ -67,7 +67,7 @@ class IOCService
      * @param array $events
      * @return $this
      */
-    protected function events(array $events)
+    public function events(array $events)
     {
         foreach ($events as $event => $handlers) {
             foreach (is_array($handlers) ? $handlers : [$handlers] as $handler) {
@@ -81,12 +81,11 @@ class IOCService
      * @param array $commands
      * @return $this
      */
-    protected function commands(array $commands)
+    public function commands(array $commands)
     {
-        Artisan::getFacadeRoot()
-            ->starting(function ($artisan) use ($commands) {
-                $artisan->resolveCommands($commands);
-            });
+        Artisan::starting(function ($artisan) use ($commands) {
+            $artisan->resolveCommands($commands);
+        });
         return $this;
     }
 }

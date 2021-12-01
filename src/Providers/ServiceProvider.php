@@ -3,9 +3,15 @@
 namespace VDVT\Support\Providers;
 
 use VDVT\Support\Facades\IOCServiceFacade;
+use VDVT\Support\Utils\IOCService;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
+    /**
+     * @var string
+     */
+    protected $defaultMethod = IOCService::DEFAULT_METHOD;
+
     /**
      * @var array
      */
@@ -35,7 +41,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         IOCServiceFacade::getFacadeRoot()
             ->repositories($this->repositories)
-            ->services($this->services)
+            ->services($this->services, $this->defaultMethod)
             ->events($this->events)
             ->commands($this->commands);
     }
