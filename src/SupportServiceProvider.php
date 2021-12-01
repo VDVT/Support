@@ -61,8 +61,13 @@ class SupportServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/support.php', 'vdvt.support.support');
 
         // Register the service the package provides.
-        $this->app->singleton('MailVariable', function ($app) {
+        $this->app->singleton('MailVariable', function () {
             return new MailVariable;
+        });
+
+        $this->app->singleton('IOCService', function ($app) {
+            $service = config('vdvt.support.support.ioc_service_provider');
+            return new $service($app);
         });
     }
 
@@ -73,6 +78,6 @@ class SupportServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['MailVariable'];
+        return ['MailVariable', 'IOCService'];
     }
 }

@@ -41,6 +41,18 @@ class MailVariable
     }
 
     /**
+     * @return $this
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function init()
+    {
+        $this->initVariable();
+        $this->initVariableValues();
+
+        return $this;
+    }
+
+    /**
      * MailVariable constructor.
      */
     public function initVariable()
@@ -97,37 +109,12 @@ class MailVariable
     }
 
     /**
-     * Init
-     *
-     * @return void
-     */
-    public function init()
-    {
-        $this->initVariable();
-        $this->initVariableValues();
-
-        return $this;
-    }
-
-    /**
      * @param $module
      * @return MailVariable
      */
     public function setModule($module): self
     {
         $this->module = $module;
-        return $this;
-    }
-
-    /**
-     * @param $name
-     * @param null $description
-     * @param string $module
-     * @return MailVariable
-     */
-    public function addVariable($name, $description = null): self
-    {
-        $this->variables[$this->module][$name] = $description;
         return $this;
     }
 
@@ -142,6 +129,18 @@ class MailVariable
             $this->addVariable($name, $description);
         }
 
+        return $this;
+    }
+
+    /**
+     * @param $name
+     * @param null $description
+     * @param string $module
+     * @return MailVariable
+     */
+    public function addVariable($name, $description = null): self
+    {
+        $this->variables[$this->module][$name] = $description;
         return $this;
     }
 
@@ -162,15 +161,15 @@ class MailVariable
     }
 
     /**
-     * @param $variable
-     * @param $value
-     * @param string $module
-     * @return MailVariable
+     * @return array
      */
-    public function setVariableValue($variable, $value): self
+    public function getVariableValues($module = null)
     {
-        $this->variableValues[$this->module][$variable] = $value;
-        return $this;
+        if ($module) {
+            return Arr::get($this->variableValues, $module, []);
+        }
+
+        return $this->variableValues;
     }
 
     /**
@@ -189,25 +188,14 @@ class MailVariable
 
     /**
      * @param $variable
-     * @param $module
-     * @param string $default
-     * @return string
+     * @param $value
+     * @param string $module
+     * @return MailVariable
      */
-    public function getVariableValue($variable, $module, $default = ''): string
+    public function setVariableValue($variable, $value): self
     {
-        return (string) Arr::get($this->variableValues, $module . '.' . $variable, $default);
-    }
-
-    /**
-     * @return array
-     */
-    public function getVariableValues($module = null)
-    {
-        if ($module) {
-            return Arr::get($this->variableValues, $module, []);
-        }
-
-        return $this->variableValues;
+        $this->variableValues[$this->module][$variable] = $value;
+        return $this;
     }
 
     /**
@@ -216,7 +204,7 @@ class MailVariable
      * @return string
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function prepareData( ? string $content, array $variables = []) : string
+    public function prepareData(?string $content, array $variables = []): string
     {
         if (!empty($content)) {
             $coreVariables = array_keys($this->variables['core']);
@@ -264,5 +252,16 @@ class MailVariable
         }
 
         return $content;
+    }
+
+    /**
+     * @param $variable
+     * @param $module
+     * @param string $default
+     * @return string
+     */
+    public function getVariableValue($variable, $module, $default = ''): string
+    {
+        return (string)Arr::get($this->variableValues, $module . '.' . $variable, $default);
     }
 }
