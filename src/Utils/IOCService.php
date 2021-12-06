@@ -3,8 +3,11 @@
 namespace VDVT\Support\Utils;
 
 use Illuminate\Console\Application as Artisan;
+use Illuminate\Console\Command;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Symfony\Component\Finder\Finder;
 
 class IOCService
 {
@@ -87,5 +90,41 @@ class IOCService
             $artisan->resolveCommands($commands);
         });
         return $this;
+    }
+
+    /**
+     * Register all of the commands in the given directory.
+     *
+     * @param array|string $paths
+     * @return void
+     */
+    public function loadCommands($paths)
+    {
+        $paths = array_unique(Arr::wrap($paths));
+
+        $paths = array_filter($paths, function ($path) {
+            return is_dir($path);
+        });
+
+        if (empty($paths)) {
+            return;
+        }
+
+        $namespace = $this->app->getNamespace();
+
+        foreach ((new Finder())->in($paths)->files() as $command) {
+            $command = $namespace . str_replace(
+                    ['/', '.php'],
+                    ['\\', ''],
+                    Str::after($command->getRealPath(), realpath(app_path()) . DIRECTORY_SEPARATOR)
+                );
+
+            if (is_subclass_of($command, Command::class) &&
+                !(new \ReflectionClass($command))->isAbstract()) {
+                Artisan::starting(function ($artisan) use ($command) {
+                    $artisan->resolve($command);
+                });
+            }
+        }
     }
 }
