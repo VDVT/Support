@@ -111,13 +111,19 @@ class IOCService
             return;
         }
 
-        $namespace = $namespace ?: $this->app->getNamespace();
+        if ($namespace) {
+            $namespacePath = base_path($namespace);
+            $namespace = "{$namespace}\\";
+        } else {
+            $namespace = $this->app->getNamespace();
+            $namespacePath = app_path();
+        }
 
         foreach ((new Finder())->in($paths)->files() as $command) {
             $command = $namespace . str_replace(
                     ['/', '.php'],
                     ['\\', ''],
-                    Str::after($command->getRealPath(), realpath(app_path()) . DIRECTORY_SEPARATOR)
+                    Str::after($command->getRealPath(), realpath($namespacePath) . DIRECTORY_SEPARATOR)
                 );
 
             if (is_subclass_of($command, Command::class) &&
