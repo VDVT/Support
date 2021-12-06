@@ -96,9 +96,10 @@ class IOCService
      * Register all of the commands in the given directory.
      *
      * @param array|string $paths
-     * @return void
+     * @param mixed $namespace
+     * @throws \ReflectionException
      */
-    public function loadCommands($paths)
+    public function loadCommands($paths, $namespace = null)
     {
         $paths = array_unique(Arr::wrap($paths));
 
@@ -110,7 +111,7 @@ class IOCService
             return;
         }
 
-        $namespace = $this->app->getNamespace();
+        $namespace = $namespace ?: $this->app->getNamespace();
 
         foreach ((new Finder())->in($paths)->files() as $command) {
             $command = $namespace . str_replace(
